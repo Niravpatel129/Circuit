@@ -12,6 +12,7 @@ struct HomeView: View {
 
     // UI State
     @State private var isReadyToScan: Bool = false
+    @State private var showQRCode: Bool = false
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -52,6 +53,17 @@ struct HomeView: View {
                     ) {
                         strategyManager.toggleBlocking()
                     }
+
+                    // QR fallback if NFC is unavailable
+                    if !NFCNDEFReaderSession.readingAvailable {
+                        ActionCard(
+                            icon: "qrcode",
+                            title: "Show QR Code",
+                            color: .purple
+                        ) {
+                            showQRCode = true
+                        }
+                    }
                 }
                 .padding(.horizontal, 20)
 
@@ -74,6 +86,9 @@ struct HomeView: View {
             .padding(.top, 32)
         }
         .background(Color(.systemGroupedBackground))
+        .sheet(isPresented: $showQRCode) {
+            QRCodeView(dataString: "https://circuit.app/profile/placeholder", title: "Circuit QR Code")
+        }
     }
 
     private func formatDuration(_ interval: TimeInterval) -> String {
