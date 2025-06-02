@@ -105,19 +105,20 @@ struct ModePickerView: View {
                 .padding(.horizontal)
                 .padding(.top, 10)
                 
-                if let selectedMode = selectedMode {
-                    Button(action: {
+                Button(action: {
+                    if let selectedMode = selectedMode {
                         onModeSelected(selectedMode)
-                    }) {
-                        Text("Continue with \(selectedMode.name)")
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.blue)
-                            .cornerRadius(10)
                     }
-                    .padding()
+                }) {
+                    Text("Continue")
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(selectedMode != nil ? Color.blue : Color.gray)
+                        .cornerRadius(10)
                 }
+                .padding()
+                .disabled(selectedMode == nil)
             }
             .frame(maxWidth: .infinity, alignment: .top)
         }
