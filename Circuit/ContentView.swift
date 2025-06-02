@@ -8,7 +8,7 @@ struct ContentView: View {
             if hasCompletedOnboarding {
                 HomeView()
             } else {
-                WelcomeView()
+                WelcomeView(hasCompletedOnboarding: $hasCompletedOnboarding)
                     .navigationTitle("Circuit")
             }
         }

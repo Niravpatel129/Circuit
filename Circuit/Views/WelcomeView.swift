@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @Binding var hasCompletedOnboarding: Bool
+    
     var body: some View {
         VStack {
             Text("Welcome to Circuit")
@@ -11,7 +13,7 @@ struct WelcomeView: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             
-            NavigationLink(destination: OnboardingView(hasCompletedOnboarding: .constant(false))) {
+            NavigationLink(destination: OnboardingView(hasCompletedOnboarding: $hasCompletedOnboarding)) {
                 Text("Get Started")
                     .font(.headline)
                     .foregroundColor(.white)
@@ -27,6 +29,6 @@ struct WelcomeView: View {
 
 #Preview {
     NavigationView {
-        WelcomeView()
+        WelcomeView(hasCompletedOnboarding: .constant(false))
     }
 } 
