@@ -81,7 +81,7 @@ struct HomeView: View {
                     }
                 }
             }) {
-                Text(isReadyToScan ? "Ready to Scan" : "Tap to Lock Circuit")
+                Text(isReadyToScan ? "Ready to Scan" : "Tap to Block Now")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(.white)
