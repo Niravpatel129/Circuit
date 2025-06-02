@@ -55,11 +55,28 @@ struct HomeView: View {
                 }
                 .padding(.horizontal, 20)
 
+                // Active session info
+                if let session = strategyManager.activeSession {
+                    InfoCard(
+                        icon: "clock.fill",
+                        title: "Session Active",
+                        message: "Running for " + formatDuration(strategyManager.elapsedTime)
+                    )
+                    .padding(.horizontal, 20)
+                }
+
                 Spacer()
             }
             .padding(.top, 32)
         }
         .background(Color(.systemGroupedBackground))
+    }
+
+    private func formatDuration(_ interval: TimeInterval) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .abbreviated
+        return formatter.string(from: interval) ?? "0s"
     }
 }
 
