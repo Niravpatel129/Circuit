@@ -9,25 +9,25 @@ struct OnboardingView: View {
     let pages = [
         OnboardingPage(
             title: "Welcome to Circuit",
-            description: "Your personal task management companion",
-            imageName: "checkmark.circle.fill",
+            description: "Your personal screen time management companion",
+            imageName: "clock.fill",
             color: .blue
         ),
         OnboardingPage(
-            title: "Stay Organized",
-            description: "Keep track of your tasks and never miss a deadline",
-            imageName: "list.bullet.clipboard.fill",
+            title: "Block Distractions",
+            description: "Set up screen time limits and block distracting apps when you need to focus",
+            imageName: "lock.fill",
             color: .green
         ),
         OnboardingPage(
-            title: "Screen Time Access",
-            description: "Allow Circuit to help you manage your screen time and stay focused",
-            imageName: "clock.fill",
+            title: "Track Your Usage",
+            description: "Monitor your screen time and build healthier digital habits",
+            imageName: "chart.bar.fill",
             color: .orange
         ),
         OnboardingPage(
             title: "Get Started",
-            description: "Begin your journey to better productivity",
+            description: "Begin your journey to better screen time management",
             imageName: "arrow.right.circle.fill",
             color: .purple
         )
@@ -86,6 +86,10 @@ struct OnboardingView: View {
                                         }
                                     } catch {
                                         print("Failed to request screen time authorization: \(error)")
+                                        // Still allow user to proceed even if authorization fails
+                                        withAnimation {
+                                            currentPage += 1
+                                        }
                                     }
                                 }
                             } else {
