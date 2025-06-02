@@ -56,7 +56,7 @@ struct HomeView: View {
                 .padding(.horizontal, 20)
 
                 // Active session info
-                if let session = strategyManager.activeSession {
+                if let _ = strategyManager.activeSession {
                     InfoCard(
                         icon: "clock.fill",
                         title: "Session Active",
@@ -64,6 +64,10 @@ struct HomeView: View {
                     )
                     .padding(.horizontal, 20)
                 }
+
+                // Profiles carousel
+                BlockedProfileCarousel()
+                    .padding(.top, 16)
 
                 Spacer()
             }
