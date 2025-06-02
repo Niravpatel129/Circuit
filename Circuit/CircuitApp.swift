@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 @main
 struct CircuitApp: App {
@@ -21,5 +22,7 @@ struct CircuitApp: App {
                 .environmentObject(strategyManager)
                 .environmentObject(nfcWriter)
         }
+        // Register SwiftData models used across the app
+        .modelContainer(for: [BlockedProfileSession.self, BlockedProfiles.self])
     }
 } 
