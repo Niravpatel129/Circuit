@@ -26,7 +26,7 @@ struct AppPickerView: View {
                         onModeUpdated(mode)
                     }
             }
-            .navigationBarItems(trailing: Button("Done") {
+            .navigationBarItems(trailing: Button("Continue") {
                 onModeUpdated(mode)
                 dismiss()
             })

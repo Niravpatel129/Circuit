@@ -11,6 +11,11 @@ struct ModePickerView: View {
     var body: some View {
         NavigationView {
             VStack {
+                Text("Create and manage different blocking modes for various situations. You can add, rename, or delete modes as needed.")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                    .padding(.horizontal)
+                    .padding(.top)
                 List {
                     ForEach(modes) { mode in
                         Button(action: {

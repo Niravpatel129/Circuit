@@ -15,9 +15,6 @@ struct BlockingMode: Identifiable, Codable {
     }
     
     static let defaultModes: [BlockingMode] = [
-        BlockingMode(name: "Default", isDefault: true),
-        BlockingMode(name: "Gym", blockedApps: []),
-        BlockingMode(name: "Work", blockedApps: []),
-        BlockingMode(name: "Study", blockedApps: [])
+        BlockingMode(name: "Default", isDefault: true)
     ]
 } 
