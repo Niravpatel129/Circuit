@@ -1,8 +1,10 @@
 import SwiftUI
+import FamilyControls
 
 struct OnboardingView: View {
     @Binding var hasCompletedOnboarding: Bool
     @State private var currentPage = 0
+    @State private var authorizationStatus: AuthorizationStatus = .notDetermined
     
     let pages = [
         OnboardingPage(
@@ -16,6 +18,12 @@ struct OnboardingView: View {
             description: "Keep track of your tasks and never miss a deadline",
             imageName: "list.bullet.clipboard.fill",
             color: .green
+        ),
+        OnboardingPage(
+            title: "Screen Time Access",
+            description: "Allow Circuit to help you manage your screen time and stay focused",
+            imageName: "clock.fill",
+            color: .orange
         ),
         OnboardingPage(
             title: "Get Started",
@@ -69,8 +77,21 @@ struct OnboardingView: View {
                     
                     Button(action: {
                         if currentPage < pages.count - 1 {
-                            withAnimation {
-                                currentPage += 1
+                            if currentPage == 2 { // Screen Time permission page
+                                Task {
+                                    do {
+                                        try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
+                                        withAnimation {
+                                            currentPage += 1
+                                        }
+                                    } catch {
+                                        print("Failed to request screen time authorization: \(error)")
+                                    }
+                                }
+                            } else {
+                                withAnimation {
+                                    currentPage += 1
+                                }
                             }
                         } else {
                             hasCompletedOnboarding = true
