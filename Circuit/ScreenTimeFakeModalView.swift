@@ -30,7 +30,7 @@ struct ScreenTimeFakeModalView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.white)
                     .padding(.top, 40)
-                Text("To limit your distracting apps, ScreenZen requires your permission")
+                Text("To limit your distracting apps, Circuit requires your permission")
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 30)
@@ -40,10 +40,10 @@ struct ScreenTimeFakeModalView: View {
 
                 // Fake modal
                 VStack(spacing: 0) {
-                    Text("ScreenZen Would Like to Access Screen Time")
+                    Text("Circuit Would Like to Access Screen Time")
                         .font(.headline)
                         .padding(.top, 20)
-                    Text("Providing ScreenZen access to Screen Time may allow it to see your activity data, restrict content, and limit the usage of apps and websites.")
+                    Text("Providing Circuit access to Screen Time may allow it to see your activity data, restrict content, and limit the usage of apps and websites.")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                         .multilineTextAlignment(.center)
