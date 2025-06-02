@@ -4,8 +4,8 @@ struct ModePickerView: View {
     @State private var modes: [BlockingMode] = BlockingMode.defaultModes
     @State private var showingAppPicker = false
     @State private var selectedMode: BlockingMode?
-    @State private var showingNewModeSheet = false
-    @State private var newModeName = ""
+    @State private var editingModeId: UUID?
+    @State private var editingModeName: String = ""
     var onModeSelected: (BlockingMode) -> Void
     
     var body: some View {
@@ -24,48 +24,67 @@ struct ModePickerView: View {
                 Text("Select or create a focus mode to manage your app usage. Customize which apps to block for each mode.")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
                     .padding(.horizontal)
                     .padding(.bottom, 10)
                 
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(modes) { mode in
-                        Button(action: {
-                            selectedMode = mode
-                            showingAppPicker = true
-                        }) {
-                            HStack {
+                        HStack {
+                            if editingModeId == mode.id {
+                                TextField("Mode Name", text: $editingModeName, onCommit: {
+                                    if let index = modes.firstIndex(where: { $0.id == mode.id }) {
+                                        modes[index].name = editingModeName
+                                    }
+                                    editingModeId = nil
+                                })
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .padding(.vertical, 8)
+                            } else {
                                 VStack(alignment: .leading) {
                                     Text(mode.name)
                                         .font(.headline)
+                                        .onTapGesture(count: 2) {
+                                            editingModeId = mode.id
+                                            editingModeName = mode.name
+                                        }
                                     Text("\(mode.blockedApps.count) apps blocked")
                                         .font(.subheadline)
                                         .foregroundColor(.secondary)
                                 }
-                                Spacer()
-                                if mode.isDefault {
-                                    Text("Default")
-                                        .font(.caption)
-                                        .foregroundColor(.blue)
-                                        .padding(.horizontal, 8)
-                                        .padding(.vertical, 4)
-                                        .background(Color.blue.opacity(0.1))
-                                        .cornerRadius(8)
-                                }
                             }
-                            .padding()
-                            .background(Color.white)
-                            .cornerRadius(12)
-                            .shadow(color: Color.black.opacity(0.03), radius: 2, x: 0, y: 1)
-                            .padding(.horizontal)
-                            .padding(.vertical, 4)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            Spacer()
+                            if mode.isDefault {
+                                Text("Default")
+                                    .font(.caption)
+                                    .foregroundColor(.blue)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(Color.blue.opacity(0.1))
+                                    .cornerRadius(8)
+                            }
+                        }
+                        .padding()
+                        .cornerRadius(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray)
+                        )
+                        .background(Color.white)
+                        .padding(.horizontal)
+                        .padding(.vertical, 4)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .onTapGesture {
+                            selectedMode = mode
+                            showingAppPicker = true
                         }
                     }
                 }
                 
                 Button(action: {
-                    showingNewModeSheet = true
+                    let newMode = BlockingMode(name: "New Mode")
+                    modes.append(newMode)
+                    selectedMode = newMode
+                    showingAppPicker = true
                 }) {
                     HStack {
                         Image(systemName: "plus.circle.fill")
@@ -101,25 +120,6 @@ struct ModePickerView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .top)
-        }
-        .sheet(isPresented: $showingNewModeSheet) {
-            NavigationView {
-                Form {
-                    TextField("Mode Name", text: $newModeName)
-                }
-                .navigationBarItems(
-                    leading: Button("Cancel") {
-                        showingNewModeSheet = false
-                    },
-                    trailing: Button("Create") {
-                        let newMode = BlockingMode(name: newModeName)
-                        modes.append(newMode)
-                        newModeName = ""
-                        showingNewModeSheet = false
-                    }
-                    .disabled(newModeName.isEmpty)
-                )
-            }
         }
         .sheet(isPresented: $showingAppPicker) {
             if let mode = selectedMode {
