@@ -137,6 +137,13 @@ struct ModePickerView: View {
                 }
             }
         }
+        .onAppear {
+            // Find and select the default mode
+            if let defaultMode = modes.first(where: { $0.isDefault }) {
+                selectedMode = defaultMode
+                showingAppPicker = true
+            }
+        }
     }
     
     private func deleteMode(at offsets: IndexSet) {
