@@ -29,9 +29,22 @@
 		FAA492D02DED802E00445C07 /* CircuitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CircuitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FAD0E8162DEDBF98006B8584 /* Exceptions for "Circuit" folder in "Circuit" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FAA492B52DED802C00445C07 /* Circuit */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FAA492B82DED802C00445C07 /* Circuit */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FAD0E8162DEDBF98006B8584 /* Exceptions for "Circuit" folder in "Circuit" target */,
+			);
 			path = Circuit;
 			sourceTree = "<group>";
 		};
