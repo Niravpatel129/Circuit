@@ -5,7 +5,7 @@ struct ContentView: View {
     @State private var hasRequestedScreenTime = false
     @State private var hasPickedApps = false
     @State private var hasSyncedDevice = false
-    @State private var pickedApps: [String] = []
+    @State private var selectedMode: BlockingMode?
 
     var body: some View {
         NavigationView {
@@ -17,8 +17,8 @@ struct ContentView: View {
                     hasRequestedScreenTime = true
                 }
             } else if !hasPickedApps {
-                AppPickerView { apps in
-                    pickedApps = apps
+                ModePickerView { mode in
+                    selectedMode = mode
                     hasPickedApps = true
                 }
             } else if !hasSyncedDevice {

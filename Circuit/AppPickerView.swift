@@ -1,53 +1,56 @@
 import SwiftUI
 
 struct AppPickerView: View {
-    let mockApps = ["Instagram", "TikTok", "YouTube", "Snapchat", "Twitter", "Facebook"]
-    @State private var selectedApps: Set<String> = []
-    var onContinue: ([String]) -> Void
-
+    let mockApps = ["Instagram", "TikTok", "YouTube", "Snapchat", "Twitter", "Facebook", "Games"]
+    @State private var mode: BlockingMode
+    var onModeUpdated: (BlockingMode) -> Void
+    
+    init(mode: BlockingMode, onModeUpdated: @escaping (BlockingMode) -> Void) {
+        _mode = State(initialValue: mode)
+        self.onModeUpdated = onModeUpdated
+    }
+    
     var body: some View {
-        VStack {
-            Text("Pick Apps to Block")
-                .font(.title)
-                .fontWeight(.bold)
-                .padding(.top, 40)
-            Text("Select the apps you want to block during focus time.")
-                .foregroundColor(.gray)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 30)
-                .padding(.top, 8)
-            List(mockApps, id: \.self) { app in
-                HStack {
-                    Text(app)
-                    Spacer()
-                    if selectedApps.contains(app) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundColor(.blue)
+        NavigationView {
+            VStack {
+                Text("Select Apps to Block")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .padding(.top, 40)
+                Text("Choose which apps to block in \(mode.name) mode")
+                    .foregroundColor(.gray)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 30)
+                    .padding(.top, 8)
+                
+                List(mockApps, id: \.self) { app in
+                    HStack {
+                        Text(app)
+                        Spacer()
+                        if mode.blockedApps.contains(app) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.blue)
+                        }
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if mode.blockedApps.contains(app) {
+                            mode.blockedApps.remove(app)
+                        } else {
+                            mode.blockedApps.insert(app)
+                        }
+                        onModeUpdated(mode)
                     }
                 }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    if selectedApps.contains(app) {
-                        selectedApps.remove(app)
-                    } else {
-                        selectedApps.insert(app)
-                    }
-                }
+                .listStyle(InsetGroupedListStyle())
             }
-            .listStyle(InsetGroupedListStyle())
-            Button(action: {
-                onContinue(Array(selectedApps))
-            }) {
-                Text("Continue")
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(selectedApps.isEmpty ? Color.gray : Color.blue)
-                    .cornerRadius(10)
-            }
-            .disabled(selectedApps.isEmpty)
-            .padding(.horizontal, 20)
-            .padding(.bottom, 30)
+            .navigationBarItems(trailing: Button("Done") {
+                onModeUpdated(mode)
+            })
         }
     }
+}
+
+#Preview {
+    AppPickerView(mode: BlockingMode(name: "Test")) { _ in }
 } 
