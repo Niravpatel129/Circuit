@@ -1,59 +1,71 @@
 import SwiftUI
 import CoreNFC
 
+// --- Environment-managed HomeView that mirrors Foqos dashboard style ---
 struct HomeView: View {
     @StateObject private var nfcReader = NFCReader()
-    @State private var isReadyToScan = false
+
+    // Managers provided from CircuitApp
+    @EnvironmentObject private var strategyManager: StrategyManager
+    @EnvironmentObject private var navigationManager: NavigationManager
+    @EnvironmentObject private var requestAuthorizer: RequestAuthorizer
+
+    // UI State
+    @State private var isReadyToScan: Bool = false
     
     var body: some View {
-        VStack {
-            Spacer()
-            
-            // Tag Image
-            Image(systemName: "tag.fill")
-                .font(.system(size: 100))
-                .foregroundColor(.blue)
-                .padding()
-            
-            // Connection Status
-            Text(nfcReader.connectionStatus)
-                .foregroundColor(.secondary)
-                .padding(.bottom)
-            
-            // Lock Button
-            Button(action: {
-                withAnimation {
-                    isReadyToScan.toggle()
-                    if isReadyToScan {
-                        nfcReader.startScanning()
-                    } else {
-                        nfcReader.connectionStatus = "Not Connected"
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(alignment: .leading, spacing: 24) {
+                Text("Circuit")
+                    .font(.largeTitle).bold()
+                    .padding(.horizontal, 20)
+
+                // INFO
+                InfoCard(
+                    icon: "wave.3.right.circle.fill",
+                    title: "NFC Status",
+                    message: nfcReader.connectionStatus
+                )
+                .padding(.horizontal, 20)
+
+                // ACTIONS
+                VStack(spacing: 12) {
+                    ActionCard(
+                        icon: isReadyToScan ? "xmark.circle.fill" : "tag.fill",
+                        title: isReadyToScan ? "Cancel Scan" : "Scan NFC Tag",
+                        color: .blue
+                    ) {
+                        withAnimation {
+                            isReadyToScan.toggle()
+                            if isReadyToScan {
+                                nfcReader.startScanning()
+                            } else {
+                                nfcReader.connectionStatus = "Not Connected"
+                            }
+                        }
+                    }
+
+                    ActionCard(
+                        icon: strategyManager.isBlocking ? "lock.open.fill" : "lock.fill",
+                        title: strategyManager.isBlocking ? "Stop Blocking" : "Start Blocking",
+                        color: strategyManager.isBlocking ? .red : .green
+                    ) {
+                        strategyManager.toggleBlocking()
                     }
                 }
-            }) {
-                Text(isReadyToScan ? "Ready to Scan" : "Tap to Block Now")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(isReadyToScan ? Color.green : Color.blue)
-                    .cornerRadius(15)
+                .padding(.horizontal, 20)
+
+                Spacer()
             }
-            .padding(.horizontal, 40)
-            
-            if nfcReader.isScanning {
-                ProgressView()
-                    .padding(.top)
-            }
-            
-            Spacer()
+            .padding(.top, 32)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.systemBackground))
+        .background(Color(.systemGroupedBackground))
     }
 }
 
 #Preview {
     HomeView()
+        .environmentObject(StrategyManager())
+        .environmentObject(NavigationManager())
+        .environmentObject(RequestAuthorizer())
 } 
