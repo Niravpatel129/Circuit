@@ -11,7 +11,6 @@ struct ContentView: View {
         NavigationView {
             if !hasCompletedOnboarding {
                 OnboardingView(hasCompletedOnboarding: $hasCompletedOnboarding)
-                    .navigationTitle("Circuit")
             } else if !hasRequestedScreenTime {
                 ScreenTimeFakeModalView {
                     hasRequestedScreenTime = true

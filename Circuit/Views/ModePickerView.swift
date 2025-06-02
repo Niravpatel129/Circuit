@@ -11,11 +11,6 @@ struct ModePickerView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("Create and manage different blocking modes for various situations. You can add, rename, or delete modes as needed.")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-                    .padding(.horizontal)
-                    .padding(.top)
                 List {
                     ForEach(modes) { mode in
                         Button(action: {
@@ -60,7 +55,6 @@ struct ModePickerView: View {
                     .padding()
                 }
             }
-            .navigationTitle("Blocking Modes")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -75,7 +69,6 @@ struct ModePickerView: View {
                     Form {
                         TextField("Mode Name", text: $newModeName)
                     }
-                    .navigationTitle("New Mode")
                     .navigationBarItems(
                         leading: Button("Cancel") {
                             showingNewModeSheet = false
