@@ -1,24 +1,22 @@
-//
-//  ContentView.swift
-//  Circuit
-//
-//  Created by nirav patel on 2025-06-02.
-//
-
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            VStack {
+                Text("Welcome to Circuit")
+                    .font(.largeTitle)
+                    .padding()
+                
+                Text("Your fresh start begins here")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            .navigationTitle("Circuit")
         }
-        .padding()
     }
 }
 
 #Preview {
     ContentView()
-}
+} 
